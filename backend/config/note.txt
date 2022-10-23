@@ -3,4 +3,6 @@ add the following:
 
 PORT=4000
 DB_URL="mongodb+srv://<username>:<password>@cluster0.eyhty.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-
+JWT_EXPIRES_IN_SECONDS=5d
+JWT_SECRET=AOSDLKFHADKFJADFAOSKLRHKD<ANY KEY and be careful with it>
+COOKIE_EXPIRES=5
