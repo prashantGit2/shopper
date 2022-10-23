@@ -1,6 +1,7 @@
 const User = require('../models/userModel')
 const ErrorHandler = require('../utils/errorHandler')
 const catchAsyncError = require('../middleware/catchAsyncError')
+const sendToken = require('../utils/JWTToken')
 
 
 
@@ -15,62 +16,29 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
             url: "sample url"
         }
     })
-    res.status(201).json({
-        success: true,
-        user
-    })
+    sendToken(user,201,res)
 })
 
 
-// get all products
-// exports.getAllProducts = catchAsyncError(async (req, res) => {
-//     const resultsPerPage = 6;
-//     const productsCount = await Product.countDocuments()
-//     const apiFeature = new ApiFeatures(Product.find(), req.query).search().filter().pagination(resultsPerPage)
-//     const products = await apiFeature.query;
-//     res.status(200).json({
-//         success: true,
-//         page: req.query.page || 1,
-//         productsCount,
-//         resultsPerPage,
-//         products
-//     })
-// })
-// // get product details
-// exports.getProductDetails = catchAsyncError(async (req, res, next) => {
-//     const product = await Product.findById(req.params.id)
-//     if (!product) {
-//         return next(new ErrorHandler("Product not found", 404))
-//     }
-//     res.status(200).json({
-//         success: true,
-//         product
-//     })
-// })
+// login user
+exports.loginUser = catchAsyncError(async (req,res,next) => {
+    console.log("body",req.body)
+    const {email,password} = req.body;
+    // checking if user has giver password and email both
+    if(!email || !password) {
+        return next(new ErrorHandler("Please enter Email and Password",400))
+    }
+    const user = await User.findOne({email}).select("+password")
 
-// //update a product -- admin
-// exports.updateProduct = catchAsyncError(async (req, res, next) => {
-//     let product = await Product.findById(req.params.id)
-//     if (!product) {
-//         return next(new ErrorHandler("Product not found", 404))
-//     }
-//     product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true, useFindAndModify: false })
+    if (!user){
+        return next(new ErrorHandler("Invalid Email or Password",401))
+    }
 
-//     res.status(200).json({
-//         success: true,
-//         product
-//     })
-// })
+    const isPasswordMatched = user.comparePassword(password)
 
-// exports.deleteProduct = catchAsyncError(async (req, res, next) => {
-//     const product = await Product.findById(req.params.id)
-//     if (!product) {
-//         return next(new ErrorHandler("Product not found", 404))
-//     }
-//     await product.remove()
+    if (!isPasswordMatched){
+        return next(new ErrorHandler("Invalid Email or Password",401));
+    }
 
-//     res.status(200).json({
-//         success: true,
-//         message: 'product deleted successfully'
-//     })
-// })
+    sendToken(user,200,res)
+})
