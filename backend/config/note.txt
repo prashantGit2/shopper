@@ -1,0 +1,6 @@
+create a 'config.env' file in this directory
+add the following:
+
+PORT=4000
+DB_URL="mongodb+srv://<username>:<password>@cluster0.eyhty.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+
