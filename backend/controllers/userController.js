@@ -33,7 +33,7 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Invalid Email or Password", 401));
   }
 
-  const isPasswordMatched = user.comparePassword(password);
+  const isPasswordMatched = await user.comparePassword(password);
 
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid Email or Password", 401));
@@ -112,3 +112,68 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
   await user.save()
   sendToken(user,200,res)
 });
+
+// GET USER DETAILS
+exports.getUserDetails = catchAsyncError(async (req, res, next) => {
+  const user = await User.findById(req.user.id)
+  
+  res.status(200).json({
+      success: true,
+      user
+  })
+})
+
+// UPDATE USER PASSWORD
+exports.updatePassword = catchAsyncError(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select("+password")
+  const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
+  console.log(":::isPasswordMatched",isPasswordMatched)
+  if (!isPasswordMatched) {
+    return next(new ErrorHandler("old Password is incorrent", 400));
+  }
+  if (req.body.newPassword !== req.body.confirmPassword){
+    return next(new ErrorHandler("Password doesn't match", 400));
+  }
+  user.password = req.body.newPassword;
+  await user.save()
+  sendToken(user,200,res)
+})
+
+// UPDATE USER PROFILE
+exports.updateProfile = catchAsyncError(async (req, res, next) => {
+
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+  }
+  // we will add cloudinary later
+
+  const user = await User.findByIdAndUpdate(req.user.id,newUserData,{new:true,runValidators:true,useFindAndModify: false})
+  res.status(200).json({
+    success:true,
+    user
+  })
+})
+
+// GET ALL USERS
+exports.getAllUsers = catchAsyncError(async (req, res,next) => {
+
+  const users = await User.find()
+  
+  res.status(200).json({
+      success: true,
+      users
+  })
+})
+// GET SINGLE USER DETAILS -- ADMIN
+exports.getAUser = catchAsyncError(async (req, res,next) => {
+
+  const user = await User.findById(req.params.id)
+  if (!user){
+    return next(new ErrorHandler(`User not found with id: ${req.params.id}`, 404))
+  }
+  res.status(200).json({
+      success: true,
+      user
+  })
+})
