@@ -179,11 +179,11 @@ exports.getAUser = catchAsyncError(async (req, res,next) => {
 })
 
 // UPDATE USER ROLE -- ADMIN
-exports.updateUserRole = catchAsyncError(async (req, res, next) => {
+exports.updateUser = catchAsyncError(async (req, res, next) => {
 
   const newUserData = {
-    // name: req.body.name,
-    // email: req.body.email,
+    name: req.body.name,
+    email: req.body.email,
     role:req.body.role,
   }
   const user = await User.findByIdAndUpdate(req.params.id,newUserData,{new:true,runValidators:true,useFindAndModify: false})
@@ -205,5 +205,6 @@ exports.deleteUser = catchAsyncError(async (req, res, next) => {
   
   res.status(200).json({
     success:true,
+    message:"User deleted Successfully"
   })
 })
