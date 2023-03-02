@@ -1,3 +1,5 @@
 node_modules/
 /backend/config/config.env
 .vscode/settings.json
+
+.DS_STORE
