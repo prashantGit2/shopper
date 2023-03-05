@@ -42,22 +42,29 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static" color="transparent" className="blur-bg">
+    <AppBar
+      position="static"
+      color="transparent"
+      className="blur-bg"
+      sx={{ textDecoration: "none" }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <LocalMallIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1, color:"white" }} />
+          <LocalMallIcon
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+            color="primary"
+          />
           <NavLink to="/">
             <Typography
               variant="h6"
               noWrap
-              // component="a"
+              color="primary"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
                 fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
-                color: "white",
                 textDecoration: "none",
               }}
             >
@@ -75,9 +82,7 @@ function ResponsiveAppBar() {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              <MenuIcon sx={{
-                color:'white',
-              }} />
+              <MenuIcon color="primary" />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -97,8 +102,8 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+              {pages.map((page, index) => (
+                <MenuItem key={index} onClick={handleCloseNavMenu}>
                   <NavLink
                     to={page.to}
                     // style={({ isActive }) =>
@@ -111,19 +116,21 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
-          <LocalMallIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 ,color:'white'}} />
-          <NavLink to={"/"} style={{flexGrow:1}}>
+          <LocalMallIcon
+            color="primary"
+            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+          />
+          <NavLink to={"/"} style={{ flexGrow: 1 }}>
             <Typography
               variant="h5"
+              color="primary"
               noWrap
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
-                // flexGrow: 1,
                 fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
-                color: "white",
                 textDecoration: "none",
               }}
             >
@@ -133,8 +140,8 @@ function ResponsiveAppBar() {
 
           {/* desktop view */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <NavLink to={page.to}>
+            {pages.map((page, index) => (
+              <NavLink to={page.to} key={index}>
                 <Button
                   key={page.title}
                   onClick={handleCloseNavMenu}

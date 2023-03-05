@@ -22,6 +22,9 @@ export const counterSlice = createSlice({
       state.value += action.payload
     },
   },
+  extraReducers:{
+    
+  }
 })
 
 // Action creators are generated for each case reducer function
