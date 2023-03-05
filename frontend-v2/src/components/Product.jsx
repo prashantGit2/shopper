@@ -1,9 +1,7 @@
 import {
-  Box,
   Card,
   CardContent,
   CardMedia,
-  Stack,
   Typography,
 } from "@mui/material";
 import React from "react";
@@ -19,7 +17,7 @@ const options = {
 const Product = ({ product }) => {
   const { name, _id, images, price,ratings,numOfReviews } = product;
   return (
-    <Link to={_id}>
+    <Link to={`/product/${product._id}`} >
       <Card
         sx={{ maxWidth: 500, width: 300, bgcolor: "white" }}
         className="blur-bg t-1"

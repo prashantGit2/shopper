@@ -1,1 +1,5 @@
-export {default as Home} from "./Home"
+export {default as Product} from "./Product"
+export {default as Loader} from "./Loader"
+export {default as Footer} from "./layouts/Footer"
+export {default as Navbar} from "./layouts/Navbar"
+export {default as MetaData} from "./layouts/MetaData"

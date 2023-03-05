@@ -43,7 +43,7 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar
-      position="static"
+      position="sticky"
       color="transparent"
       className="blur-bg"
       sx={{ textDecoration: "none" }}
